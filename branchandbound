@@ -1,0 +1,40 @@
+import numpy as np
+import string
+
+
+def def_branch(s1,s2,cost=0):
+    cost+=1 # g*
+    x=len(s1)
+    y=len(s2)
+    if x==0 and y==0:
+        return 0
+    if x==0:
+        return y
+    if y==0:
+        return x
+    hx1 = abs((x-1) - y) # heuristic values
+    hx2 = abs(x - (y-1))
+    hx3 = abs((x-1) - (y-1))
+    fx1=hx1+cost
+    fx2=hx2+cost
+    fx3=hx3+cost
+
+    a = min(fx1,fx2,fx3) # a is the min of them
+    if a==fx1:
+        return def_branch(s1[:-1],s2,cost)+1 # +1 means min edit distance :-1 means s1 except last letter
+    if a==fx2:
+        return def_branch(s1,s2[:-1],cost)+1
+    if a==fx3:
+        if s1[-1] == s2[-1]:
+            return def_branch(s1[:-1],s2[:-1],cost)
+        else:
+            return def_branch(s1[:-1], s2[:-1], cost)+1
+
+
+s1 ="intention"
+s2 ="execution"
+result = def_branch(s1,s2,0)
+print(result)
+
+
+# if __name__ == "_main_":main()
